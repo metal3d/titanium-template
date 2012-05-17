@@ -20,7 +20,7 @@ Simply import template.js inside your main app.js to have Ti.App.Template class 
     var win = Ti.UI.currentWindow;
 
     var webview = Ti.UI.createWebView();
-    var template = Ti.App.Template('ui/templates/myfile.html');
+    var template = new Ti.App.Template('ui/templates/myfile.html');
 
     //set vars
     template.vars.var1 = "hello";
@@ -40,4 +40,10 @@ and the template is like this:
         </body>
     </html>
 
+{var1} and {var2} are referenced inside template object in "vars" property.
+
 Note that script src attribute must be relative from the resources directory.
+
+
+Remember to use "new" keyword to instanciate template
+
