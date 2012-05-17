@@ -21,7 +21,7 @@ function template(filename){
 	this.vars = {};
 }
 
-template.prototype.toString = function (){
+template.prototype.toString	= function (){
 	
 	//open template
 	try{
@@ -32,14 +32,23 @@ template.prototype.toString = function (){
 		return false;
 	}
 	//find script src, read file and set it to script content
-	var reg = new RegExp('<script(.*?)src="(.*?)".*?>\s*</script>');
+	var reg = new RegExp('<script[^>]*src="([^"]*)"[^>]*>\s*</script>');
 	var r = reg.exec(content);
+	
 	while (r) {
 		try{
-			var script = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, r[2]).read().text
-			content = content.replace(r[0],'<script type="text/javascript">'+script+'</script>');
+			var script = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, r[1]).read().text
+			content = content.replace(r[0],
+				"\n"
+				+'<script type="text/javascript">'
+				+"\n"
+				+script
+				+"\n"
+				+'</script>'
+				+"\n"
+			);
 		} catch(e) {
-			Ti.API.error("Error while trying to read: "+r[2]);
+			Ti.API.error("Error while trying to read: "+r[1]);
 			Ti.API.error(JSON.stringify(r));
 		}
 		r = reg.exec(content);
